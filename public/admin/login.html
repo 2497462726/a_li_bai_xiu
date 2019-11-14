@@ -30,7 +30,7 @@
   </div>
   <script src="../assets/vendors/jquery/jquery.min.js"></script>
   <script >
-  $('#loginBtn').on('click',function () {
+  $('#loginBtn').on('click',()=>{
     let email = $('#email').val() ; 
     let password = $('#password').val(); 
     // console.log(email,password) 
@@ -50,13 +50,12 @@
         email,
         password,
       },
-      success:function(data){
-        // console.log(data)
+      success:(data)=>{
         location.assign('index.html')
       },
-      error:function(){
-        console.log('密码或帐号错误')
-      }
+      error:()=>{
+        alert('邮箱或密码错误')
+      },
     })
   })
   
