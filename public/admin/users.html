@@ -29,7 +29,8 @@
         <strong>错误！</strong>发生XXX错误
       </div> -->
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" id="modifyBox">、
+          <!-- 用事件委托还要添加id -->
           <form  id="userForm">
             <h2>添加新用户</h2>
             <div class="form-group">
@@ -37,10 +38,14 @@
               <div class="form-group">
                 <label class="form-image">
                   <input id="avatar" type="file">
-                  <img src="../assets/img/default.png">
+                  <!-- 可以直接绑定事件不用事件委托 -->
+                  <img src="../assets/img/default.png" id="preview"> 
+                  <!-- 添加id -->
                   <i class="mask fa fa-upload"></i>
                 </label>
+                <input type="hidden" name="avatar" id="hiddenAvatar">
               </div>
+
             </div>
             <div class="form-group">
               <label>邮箱</label>
@@ -93,43 +98,8 @@
                 <th class="text-center" width="100">操作</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="avatar" src="../assets/img/default.png"></td>
-                <td>coder@itcast.cn</td>
-                <td>coder</td>
-                <td>激活</td>
-                <td>普通用户</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="avatar" src="../assets/img/default.png"></td>
-                <td>coder@itcast.cn</td>
-                <td>coder</td>
-                <td>激活</td>
-                <td>普通用户</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="avatar" src="../assets/img/default.png"></td>
-                <td>coder@itcast.cn</td>
-                <td>coder</td>
-                <td>激活</td>
-                <td>普通用户</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
+            <tbody id="tbody">
+              
             </tbody>
           </table>
         </div>
@@ -177,25 +147,26 @@
   <script src="../assets/vendors/jquery/jquery.js"></script>
   <script src="../assets/vendors/bootstrap/js/bootstrap.js"></script>
   <script>NProgress.done()</script>
-  <script>
-  $('#userForm').on('submit',function () {
-    let userForm =$(this).serialize()
-    //  console.log(userForm)
-    $.ajax({
-      type:'post',
-      url:'/users',
-      data:userForm ,
-      success:()=>{
-        location.reload(); 
-      },
-      error:()=>{
-        alert('添加用户失败')
-      }
-    })
-
-    return false ;
-  })
-  
+  <script src="../assets/js/user.js"></script>
+  <script type="text/html" id ="userTpl">
+  {{each data}}
+  <tr>
+      <td class="text-center"><input type="checkbox"></td>
+      <td class="text-center">
+      {{if $value.avatar}}
+      <img class="avatar" src='{{$value.avatar}}'></td>
+      {{/if}}
+      <td>{{$value.email}}</td>
+      <td>{{$value.nickName}}</td>
+      <td>{{$value.status==0 ?'未激活':'激活' }}</td>
+      <td>{{$value.role == 'admin'? '管理员':'普通用户'}}</td>
+      <td class="text-center">
+        <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
+        <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+      </td>
+    </tr>
+  {{/each}}
   </script>
+  <script src="../assets/vendors/art-template/template-web.js"></script>
 </body>
 </html>
