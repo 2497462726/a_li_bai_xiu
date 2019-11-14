@@ -16,7 +16,7 @@ $('#userForm').on('submit',function () {
   return false ;
 })
 $('#modifyBox').on('change','#avatar',function () {
-  console.log(this.files[0]);
+  // console.log(this.files[0]);
   let formData = new FormData(); 
   formData.append('avatar',this.files[0])
   $.ajax({
@@ -26,7 +26,7 @@ $('#modifyBox').on('change','#avatar',function () {
     processData: false, 
     contentType: false,
     success: (response) => {
-      console.log(response);
+      // console.log(response);
       $('#preview').attr('src', response[0].avatar);
       $('#hiddenAvatar').val( response[0].avatar)
     }
@@ -41,6 +41,40 @@ $.ajax({
   success: (response) => {
     // console.log(response);
     var html = template('userTpl', { data: response })
-    $('#tbody').html(html)
+    $('#userBox').html(html)
   }
+})
+//用户修改
+$('#userBox').on('click','.edit',function () {
+  let id = $(this).attr('data-id')
+  $.ajax({
+    type: "get",
+    url: `/users/${id}`,
+    success: (data) => {
+      // console.log(data);
+      let html = template('modifyTpl', data)
+      $('#modifyBox').html(html)
+    }
+  });
+})
+//用户修改之后提交
+$('#modifyBox').on('submit','#userForm',function () {
+  // alert(1)
+  let id = $(this).attr("data-id");
+  // console.log(id);
+  var data = $(this).serialize();
+  $.ajax({
+    type: "put",
+    url: `/users/${id}`,
+    data ,
+    success: function (response) {
+      // console.log(1);
+      location.reload()
+    },
+    error: () => {
+      console.log('修改上传错误');
+    }
+    
+  });
+  return false ;
 })
