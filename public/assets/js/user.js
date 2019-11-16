@@ -132,6 +132,7 @@ $('#deleteMany').on('click',function () {
   checkedUser.each(function (index, item) {
     // console.log($(item).attr('data-id'));
     ids.push($(item).attr('data-id')) //注意这里的item是原生js需要转换为jquery  其次需要在对应的input里面添加data-id
+    //原生 dataset.id
   });
   console.log(ids); 
 
