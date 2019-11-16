@@ -78,3 +78,18 @@ $('#modifyBox').on('submit','#userForm',function () {
   });
   return false ;
 })
+//删除数据 
+$('#userBox').on('click','.delete',function () {
+  let id = $(this).attr('data-id'); 
+  console.log(id); 
+  if (confirm('确定删除')) {
+    $.ajax({
+      type: "delete",
+      url: `/users/${id}`,
+      success: () => {
+        location.reload()
+      }
+    });
+  }
+  
+})
