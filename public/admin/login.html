@@ -52,6 +52,7 @@
       },
       success:(data)=>{
         location.assign('index.html')
+        localStorage.setItem('user',JSON.stringify(data))
       },
       error:()=>{
         alert('邮箱或密码错误')
@@ -60,6 +61,6 @@
   })
   
   </script>
-
+  <script src="../assets/js/common.js"></script>
 </body>
 </html>

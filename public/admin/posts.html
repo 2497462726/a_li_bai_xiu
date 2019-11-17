@@ -101,6 +101,7 @@
   <script src="../assets/vendors/jquery/jquery.js"></script>
   <script src="../assets/vendors/bootstrap/js/bootstrap.js"></script>
   <script src="../assets/vendors/art-template/template-web.js"></script>
+  <script src="../assets/js/common.js"></script>
   <script>NProgress.done()</script>
 
   <!-- 文章列表数据模板 --> 
@@ -113,8 +114,9 @@
   <td class="text-center">{{$imports.formData($value.createAt)}}</td>
   <td class="text-center">{{$value.state == 1 ? '已发布' : '未发布'}}</td>
   <td class="text-center">
-    <a href="javascript:;" class="btn btn-default btn-xs">编辑</a>
-    <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+    <a href="post-add.html?id={{$value._id}}" class="btn btn-default btn-xs">编辑</a>
+    <a href="javascript:;" class="btn btn-danger btn-xs delete" data-id="{{$value._id}}">删除</a>
+    <a href="javascript:;" id='myModal' class="btn btn-success btn-xs postCom" data-id="{{$value._id}}">发表评论</a>
   </td>
 </tr>
  {{/each}}
@@ -143,5 +145,62 @@
 </script>
 
   <script src="../assets/js/posts.js"></script>
+
+
+
+
+<!-- 模态框 -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="exampleModalLabel">发布评论</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="message-text" class="control-label">Message:</label>
+              <textarea class="form-control" id="message-text"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary addCom">发布</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+
+var id, userId;
+  $('#postsBox').on('click', ".postCom", function () {
+      id = $(this).data('id')
+      console.log(id, 678);
+      userId = JSON.parse(localStorage.getItem('user'))._id
+      console.log(userId, 444);
+      $('#exampleModal').modal('show')
+  })
+
+  /* 点击发布 */
+  $('.addCom').on('click', function () {
+      var content = $('#message-text').val()
+      console.log(content, 1111);
+      $.ajax({
+      type: 'post',
+      url: '/comments',
+      data: {
+          author: userId,
+          content: content,
+          post: id
+      },
+      success: function (res) {
+          console.log(res, 543);
+          $('#exampleModal').modal('hide')
+      }
+      })
+  })
+</script>
 </body>
 </html>

@@ -65,3 +65,15 @@ $('#filterForm').on('submit',function () {
   });
   return false;
 })
+
+$('#postsBox').on('click','.delete',function() {
+  let id = $(this).attr('data-id')
+  $.ajax({
+    type: 'delete', 
+    url: `/posts/${id}`,
+    success: function (response) {
+      location.reload()
+    }
+  });
+  return false;
+})
