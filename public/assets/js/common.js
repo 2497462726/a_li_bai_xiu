@@ -30,3 +30,17 @@ $.ajax({
   }
 });
 
+function getUrlParams(name) {
+  // console.log(name);
+  // console.log(location.search);
+  var paramsAry = location.search.substr(1).split('&');
+  // console.log(paramsAry);
+	// 循环数据
+	for (var i = 0; i < paramsAry.length; i++) {
+		var tmp = paramsAry[i].split('=');
+		if (tmp[0] == name) {
+			return tmp[1];
+		}
+	}
+	return false;
+}
